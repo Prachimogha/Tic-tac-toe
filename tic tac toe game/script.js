@@ -1,106 +1,118 @@
-const cells = document.querySelectorAll('.cell')
-const titleHeader = document.querySelector('#titleHeader')
-const xPlayerDisplay = document.querySelector('#xPlayerDisplay')
-const oPlayerDisplay = document.querySelector('#oPlayerDisplay')
-const restartBtn = document.querySelector('#restartBtn')
-//initialize
-let player = 'X'
-let isPauseGame =false
-let isGameStart = false
+let boxes = document.querySelectorAll(".box");
+let resetBtn = document.querySelector("#reset-btn");
+let newGameBtn = document.querySelector("#new-btn");
+let msgContainer = document.querySelector(".msg-container");
+let msg = document.querySelector("#msg");
+let startGameBtn = document.querySelector("#start-game-btn");
+let playerXNameInput = document.querySelector("#playerXName");
+let playerONameInput = document.querySelector("#playerOName");
 
-//Arrary of win conditions
-const inputCells = ['','','',
-                    '','','',
-                    '','','',]
+let turnO = true;
+let count = 0;
+let playerXName = "Player X";
+let playerOName = "Player O";
+let playAgainstAI = false;
 
-//Array of win conditions
-const winConditions =[
-    [0,1,2], [3,4,5], [6,7,8],//rows
-    [0,3,6], [1,4,7], [2,5,8],//columns
-    [0,4,8], [2,4,6]//diagonal
-]
-//add click event listeners to each cell
-cells.forEach((cell, index) => {
-    cell.addEventListener('click', () => tapCell(cell, index))
-})
-function tapCell(cell, index){
-    //Ensure cell is empty and game isn't pause
-    if(cell.textContent == '' &&
-        !isPauseGame
-    ){
-        isGameStart = true
-        updateCell(cell, index)
+const winPatterns = [
+  [0, 1, 2],
+  [0, 3, 6],
+  [0, 4, 8],
+  [1, 4, 7],
+  [2, 5, 8],
+  [2, 4, 6],
+  [3, 4, 5],
+  [6, 7, 8],
+];
 
-        //do a random pick if there are no results
-        if(!checkWinner()){
-           changePlayer()
-           randomPick()
-        }
+const resetGame = () => {
+  turnO = true;
+  count = 0;
+  enableBoxes();
+  msgContainer.classList.add("hide");
+};
+
+const startGame = () => {
+  playerXName = playerXNameInput.value || "Player X";
+  playerOName = playerONameInput.value || "Player O";
+  playAgainstAI = confirm("Do you want to play against AI?");
+  document.querySelector("main").classList.remove("hide");
+  document.querySelector(".player-names").classList.add("hide");
+};
+
+boxes.forEach((box, index) => {
+  box.addEventListener("click", () => {
+    if (turnO) {
+      box.innerText = "O";
+      turnO = false;
+      if (playAgainstAI && !checkWinner() && count < 8) {
+        setTimeout(aiMove, 500);
+      }
+    } else {
+      box.innerText = "X";
+      turnO = true;
     }
-}
-function updateCell(cell, index){
-    cell.textContent = player
-    inputCells[index] = player
-    cell.style.color = (player == 'X')? '#1892EA' : '#A737FF'
-}
-function changePlayer(){
-    player = (player == 'X')? 'O' : 'X'
-}
-function checkWinner(){
-    for (const [a,b,c] of winConditions){
-        //check each winning condition
-        if(inputCells[a] == player &&
-            inputCells[b] == player &&
-            inputCells[c] == player
-        ) {
-            declareWinner([a,b,c])
-            return true
+    box.disabled = true;
+    count++;
 
-        }
+    let isWinner = checkWinner();
+
+    if (count === 9 && !isWinner) {
+      gameDraw();
     }
-    //check for the draw(if all cell are filled )
-    if(inputCells.every(cell => cell != '')){
-        declareDraw()
-        return true
-}
-}
-function declareWinner(winningIndices) {
-    titleHeader.textContent = `${player} Win`
-    isPauseGame = true
-    //Highlight winning cells
-    winningIndices.forEach((index) => 
-        cells[index].style.background = '#2A2343'
-    )
-    restartBtn.style.visibility = 'visible'
-}
-function declareDraw(){
-    titleHeader.textContent = 'Draw'
-    isPauseGame = true
-    restartBtn.style.visibility = 'visible'
-}
-function choosePlayer(selectedPlayer){
-    //ensure that game hasn't started
-    if(isGameStart){
-        //override the selected player value
-        player = selectedPlayer
-        if (player == 'X')
-            //hightlight X display
-        xPlayerDisplay.classList.add('player-active')
-        oPlayerDisplay.classList.remove('player-active')
-}else{
-    //hightlight O display
-    xPlayerDisplay.classList.remove('player-active')
-    oPlayerDisplay.classList.add('player-active')
-}
-}
-restartBtn.addEventListener('click', ()=>{
-    restartBtn.style.visibility = 'hidden'
-    inputCells.fill('')
-    cells.forEach(cell => {
-        cell.textContent = ''
-        cell.style.background = ''
-    })
-    isPauseGame = false
-    isGameStart = false
-    titleHeader.textContent = 'Choose'
-})
+  });
+});
+
+const aiMove = () => {
+  let availableBoxes = Array.from(boxes).filter(box => box.innerText === "");
+  let randomBox = availableBoxes[Math.floor(Math.random() * availableBoxes.length)];
+  randomBox.innerText = "X";
+  randomBox.disabled = true;
+  turnO = true;
+  count++;
+  checkWinner();
+};
+
+const gameDraw = () => {
+  msg.innerText = `Game Drawn`;
+  msgContainer.classList.remove("hide");
+  disableBoxes();
+};
+
+const disableBoxes = () => {
+  for (let box of boxes) {
+    box.disabled = true;
+  }
+};
+
+const enableBoxes = () => {
+  for (let box of boxes) {
+    box.disabled = false;
+    box.innerText = "";
+  }
+};
+
+const showWinner = (winner) => {
+  let winnerName = winner === "X" ? playerXName : playerOName;
+  msg.innerText = `Congratulations!! ${winnerName} wins`;
+  msgContainer.classList.remove("hide");
+  disableBoxes();
+};
+
+const checkWinner = () => {
+  for (let pattern of winPatterns) {
+    let pos1Val = boxes[pattern[0]].innerText;
+    let pos2Val = boxes[pattern[1]].innerText;
+    let pos3Val = boxes[pattern[2]].innerText;
+
+    if (pos1Val != "" && pos2Val != "" && pos3Val != "") {
+      if (pos1Val === pos2Val && pos2Val === pos3Val) {
+        showWinner(pos1Val);
+        return true;
+      }
+    }
+  }
+};
+
+startGameBtn.addEventListener("click", startGame);
+newGameBtn.addEventListener("click", resetGame);
+resetBtn.addEventListener("click", resetGame);
