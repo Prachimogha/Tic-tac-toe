@@ -1,6 +1,7 @@
+/* Universal Reset */
 * {
-  margin: 01;
-  padding: 05;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
