@@ -4,22 +4,41 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tic-Tac-Toe Game</title>
+    <!-- Link to the external CSS file -->
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <!-- Player input section -->
     <div class="player-names">
-      <input type="text" id="playerXName" placeholder="Enter Player X Name" />
-      <input type="text" id="playerOName" placeholder="Enter Player O Name" />
+      <input 
+        type="text" 
+        id="playerXName" 
+        placeholder="Enter Player X Name" 
+        aria-label="Player X Name" 
+      />
+      <input 
+        type="text" 
+        id="playerOName" 
+        placeholder="Enter Player O Name" 
+        aria-label="Player O Name" 
+      />
       <button id="start-game-btn">Start Game</button>
     </div>
+
+    <!-- Message container for game results -->
     <div class="msg-container hide">
       <p id="msg">Winner</p>
       <button id="new-btn">New Game</button>
     </div>
+
+    <!-- Main game section -->
     <main class="hide">
       <h1>Tic Tac Toe</h1>
       <div class="container">
+        <!-- Game board -->
         <div class="game">
+          <!-- Dynamic game boxes -->
+          <!-- Using a loop in JS to generate these could improve scalability -->
           <button class="box"></button>
           <button class="box"></button>
           <button class="box"></button>
@@ -33,6 +52,8 @@
       </div>
       <button id="reset-btn">Reset Game</button>
     </main>
+
+    <!-- External JavaScript file -->
     <script src="script.js"></script>
   </body>
 </html>
