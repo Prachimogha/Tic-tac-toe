@@ -1,0 +1,143 @@
+* {
+  margin: 01;
+  padding: 05;
+  box-sizing: border-box;
+}
+
+/* Body with animated gradient background */
+body {
+  background: linear-gradient(135deg, #1E1F26, #23252B, #2C3E50, #34495E);
+  background-size: 300% 300%;
+  animation: backgroundAnimation 20s ease infinite;
+  color: #ECF0F1;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Background animation */
+@keyframes backgroundAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Container for game board */
+.container {
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Game board styling */
+.game {
+  height: 60vmin;
+  width: 60vmin;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5vmin;
+}
+
+/* Individual box styling */
+.box {
+  height: 18vmin;
+  width: 18vmin;
+  border-radius: 0.75rem;
+  border: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  font-size: 8vmin;
+  color: #FF6B6B;
+  background-color: #F0F3F4;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Box hover effect */
+.box:hover {
+  transform: scale(1.1) rotate(2deg);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+}
+
+/* Reset and New Game buttons styling */
+#reset-btn, #new-btn {
+  padding: 1rem;
+  font-size: 1.25rem;
+  background-color: #2980B9;
+  color: #ECF0F1;
+  border-radius: 0.75rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.4s ease, transform 0.4s ease;
+}
+
+/* Button hover effect */
+#reset-btn:hover, #new-btn:hover {
+  background-color: #3498DB;
+  transform: translateY(-3px);
+}
+
+/* Winner message styling */
+#msg {
+  color: #2ECC71;
+  font-size: 5vmin;
+}
+
+/* Container for the winner message */
+.msg-container {
+  height: 100vmin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+/* Hiding elements */
+.hide {
+  display: none;
+}
+
+/* Player names input fields and button styling */
+.player-names {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Input field styling */
+.player-names input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #BDC3C7;
+  background-color: #34495E;
+  color: #ECF0F1;
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Input field focus effect */
+.player-names input:focus {
+  background-color: #2C3E50;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Start game button styling */
+#start-game-btn {
+  padding: 0.5rem 1rem;
+  font-size: 1.25rem;
+  background-color: #E74C3C;
+  color: #ECF0F1;
+  border-radius: 0.75rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.4s ease, transform 0.4s ease;
+}
+
+/* Start game button hover effect */
+#start-game-btn:hover {
+  background-color: #C0392B;
+  transform: translateY(-3px);
+}
